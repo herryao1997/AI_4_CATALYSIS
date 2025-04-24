@@ -25,11 +25,8 @@ from utils import (
     ensure_dir,
     # phik correlation
     plot_mixed_correlation_heatmap,
-<<<<<<< HEAD
-=======
     # nonlinear correlation
     plot_nonlinear_correlation_heatmap,
->>>>>>> 0c15363 (ai_4_catalyst-250425)
     # data analysis
     plot_kde_distribution,
     plot_catalyst_size_vs_product,
@@ -130,13 +127,6 @@ def visualize_main():
         if config["evaluation"].get("save_correlation", False):
             fn1 = os.path.join(data_corr_dir, "correlation_heatmap.jpg")
             numeric_cols_14 = df_raw_14.select_dtypes(include=[np.number]).columns.tolist()
-<<<<<<< HEAD
-            plot_mixed_correlation_heatmap(
-                df_raw_14,
-                filename=fn1,
-                cmap="ocean",
-                vmin=-1, vmax=1
-=======
             # plot_mixed_correlation_heatmap(
             plot_nonlinear_correlation_heatmap(
                 df_raw_14,
@@ -144,7 +134,6 @@ def visualize_main():
                 cmap="ocean",
                 vmin=0, vmax=1,
                 method = "mic"
->>>>>>> 0c15363 (ai_4_catalyst-250425)
             )
 
         # 数据分析图

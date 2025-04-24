@@ -3,6 +3,7 @@ models/model_catboost.py
 """
 
 from catboost import CatBoostRegressor
+from catboost import Pool
 
 class CatBoostRegression:
     """
@@ -46,3 +47,21 @@ class CatBoostRegression:
         else:
             return importances  # 如果全是 0，就直接返回
 
+    def get_shap_values(self, X):
+        pool = Pool(X)
+        shap_values = self.model.get_feature_importance(type="ShapValues", data=pool)
+        # 如果返回的是多输出 (3D 数组)，比如形状为 (n_samples, n_outputs, n_features+1)
+        if len(shap_values.shape) == 3:
+            # 对每个输出都去掉最后一列基线值（如果列数 == 特征数+1）
+            outputs = []
+            for i in range(shap_values.shape[1]):
+                if shap_values.shape[2] == X.shape[1] + 1:
+                    outputs.append(shap_values[:, i, :-1])
+                else:
+                    outputs.append(shap_values[:, i, :])
+            return outputs
+        # 如果返回的是二维数组 (n_samples, n_features+1)
+        elif len(shap_values.shape) == 2:
+            if shap_values.shape[1] == X.shape[1] + 1:
+                shap_values = shap_values[:, :-1]
+            return shap_values

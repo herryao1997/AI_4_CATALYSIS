@@ -27,12 +27,7 @@ from sklearn.metrics import r2_score
 from scipy.stats import pearsonr, spearmanr, pointbiserialr
 from matplotlib.ticker import MaxNLocator, FormatStrFormatter, LinearLocator  # 如果文件顶部已经导入可省略
 import matplotlib.ticker as ticker
-<<<<<<< HEAD
-
-
-=======
 import shap
->>>>>>> 0c15363 (ai_4_catalyst-250425)
 
 def ensure_dir(path):
     os.makedirs(path, exist_ok=True)
@@ -118,10 +113,7 @@ def short_label_bold(s: str) -> str:
     return last_part[0].upper() + last_part[1:]
 
 
-<<<<<<< HEAD
-=======
 
->>>>>>> 0c15363 (ai_4_catalyst-250425)
 # --------------- 相关性可视化---------------
 # ============== 检测变量类型 ==============
 def detect_var_type(series: pd.Series) -> str:
@@ -297,11 +289,7 @@ def plot_mixed_correlation_heatmap(df: pd.DataFrame,
             corr_matrix[j,i] = r
 
     # 简写列名
-<<<<<<< HEAD
-    new_labels = [short_label(c) for c in all_cols]
-=======
     new_labels = [short_label_normal(c) for c in all_cols]
->>>>>>> 0c15363 (ai_4_catalyst-250425)
 
     # 绘图
     fig, ax = plt.subplots(figsize=(max(10,0.5*n), max(8,0.5*n)))
@@ -315,11 +303,6 @@ def plot_mixed_correlation_heatmap(df: pd.DataFrame,
                 cbar_kws={"shrink":0.8,"aspect":30,"label":"Mixed Corr."},
                 ax=ax)
 
-<<<<<<< HEAD
-    ax.set_title("Correlation Heatmap", fontsize=14)
-    plt.xticks(rotation=45, ha="right", fontsize=12)
-    plt.yticks(fontsize=12)
-=======
     ax.set_title("Correlation Heatmap", fontsize=16)
     plt.xticks(rotation=45, ha="right", fontsize=14)
     plt.yticks(fontsize=14)
@@ -419,16 +402,10 @@ def plot_nonlinear_correlation_heatmap(df: pd.DataFrame,
     ax.set_title(f"{'Distance' if method=='distance' else 'MIC'} Correlation Heatmap", fontsize=16)
     plt.xticks(rotation=45, ha="right", fontsize=14)
     plt.yticks(fontsize=14)
->>>>>>> 0c15363 (ai_4_catalyst-250425)
     plt.tight_layout()
-
     plt.savefig(filename, dpi=700)
     plt.close()
-<<<<<<< HEAD
-    print(f"[plot_mixed_correlation_heatmap] => {filename}")
-=======
     print(f"[plot_nonlinear_correlation_heatmap] => {filename}")
->>>>>>> 0c15363 (ai_4_catalyst-250425)
 
 # --------------- 训练可视化: Loss, scatter, residual, etc. ---------------
 def plot_loss_curve(train_losses, val_losses, filename):
@@ -509,20 +486,11 @@ def plot_scatter_3d_outputs_mae(y_true, y_pred, y_labels=None, filename="scatter
     plt.savefig(filename, dpi=700)
     plt.close()
 
-<<<<<<< HEAD
-def plot_residual_histogram(
-        y_true, y_pred, y_labels=None,
-        cmap_name="coolwarm",
-        vmin=-70, vmax=70,
-        filename="residual_hist_bottom.jpg"
-):
-=======
 
 def plot_residual_histogram(y_true, y_pred, y_labels=None,
                             cmap_name="coolwarm",
                             vmin=-70, vmax=70,
                             filename="residual_hist_bottom.jpg"):
->>>>>>> 0c15363 (ai_4_catalyst-250425)
     ensure_dir_for_file(filename)
     residuals = y_true - y_pred
     n_outputs = residuals.shape[1]
@@ -575,14 +543,6 @@ def plot_residual_histogram(y_true, y_pred, y_labels=None,
     plt.close()
     print(f"[plot_residual_histogram] => {filename}")
 
-class MyScalarFormatter(ticker.ScalarFormatter):
-    def __init__(self, useMathText=True):
-        super().__init__(useMathText=useMathText)
-        # 这里也可以在外部调用 set_powerlimits((0,0)) 来强制科学计数法
-
-    def _set_format(self):
-        # 关键：只显示一位小数
-        self.format = '%.1f'
 
 class MyScalarFormatter(ticker.ScalarFormatter):
     def __init__(self, useMathText=True):
@@ -645,27 +605,12 @@ def plot_residual_kde(
         ax.set_xlabel("Residual", fontsize=16, fontweight='bold')
         ax.set_ylabel("Density", fontsize=16, fontweight='bold')
         ax.set_xlim(vmin, vmax)
-<<<<<<< HEAD
-        # ========== 这里是关键修改部分 ========== #
-        # 1) 设置最多 5 个刻度
-        ax.yaxis.set_major_locator(ticker.LinearLocator(5))
-
-        # 2) 使用自定义的 ScalarFormatter 强制科学计数法 + 一位小数
-        my_formatter = MyScalarFormatter(useMathText=True)
-        my_formatter.set_powerlimits((0, 0))  # 强制使用科学计数法
-        ax.yaxis.set_major_formatter(my_formatter)
-
-        # 3) 可选：调整 “×1e7” 之类 offset 文字的字体大小
-        ax.yaxis.get_offset_text().set_fontsize(9)
-        # ========== 修改结束 ========== #
-=======
         ax.yaxis.set_major_locator(ticker.LinearLocator(5))
         my_formatter = MyScalarFormatter(useMathText=True)
         my_formatter.set_powerlimits((0, 0))
         ax.yaxis.set_major_formatter(my_formatter)
         ax.yaxis.get_offset_text().set_fontsize(16)
         ax.yaxis.get_offset_text().set_fontweight('bold')
->>>>>>> 0c15363 (ai_4_catalyst-250425)
 
     sm = cm.ScalarMappable(norm=norm, cmap=cmap_obj)
     sm.set_array([])
@@ -883,15 +828,10 @@ def plot_kde_distribution(df, columns, filename):
         axes = [axes]
     for i, col in enumerate(columns):
         ax = axes[i]
-<<<<<<< HEAD
-        if col not in df.columns:
-            ax.text(0.5, 0.5, f"'{col}' not in df", ha='center', va='center')
-=======
         # 使用 short_label_bold 格式化列名
         col_label = short_label_bold(col)
         if col not in df.columns:
             ax.text(0.5, 0.5, f"'{col_label}' not in df", ha='center', va='center', fontsize=16, fontweight='bold')
->>>>>>> 0c15363 (ai_4_catalyst-250425)
             continue
 
         sns.kdeplot(df[col], ax=ax, fill=False, color="black", clip=(df[col].min(), df[col].max()))
@@ -907,15 +847,6 @@ def plot_kde_distribution(df, columns, filename):
 
         vmin = max(np.min(x_plot), df[col].min())
         vmax = min(np.max(x_plot), df[col].max())
-<<<<<<< HEAD
-        cmap = cm.get_cmap("coolwarm")
-        norm = mcolors.Normalize(vmin=vmin, vmax=vmax)
-
-        for j in range(len(x_plot) - 1):
-            x0, x1 = x_plot[j], x_plot[j + 1]
-            y0, y1 = y_plot[j], y_plot[j + 1]
-            color = cmap(norm((x0 + x1) * 0.5))
-=======
         cmap_ = cm.get_cmap("coolwarm")
         norm = mcolors.Normalize(vmin=vmin, vmax=vmax)
 
@@ -923,7 +854,6 @@ def plot_kde_distribution(df, columns, filename):
             x0, x1 = x_plot[j], x_plot[j+1]
             y0, y1 = y_plot[j], y_plot[j+1]
             color = cmap_(norm((x0 + x1) * 0.5))
->>>>>>> 0c15363 (ai_4_catalyst-250425)
             verts = np.array([
                 [x0, 0],
                 [x0, y0],
@@ -933,26 +863,6 @@ def plot_kde_distribution(df, columns, filename):
             poly = PolyCollection([verts], facecolors=[color], edgecolor='none', alpha=0.6)
             ax.add_collection(poly)
 
-<<<<<<< HEAD
-        ax.set_title(f"KDE of {col}")
-        ax.set_xlabel(col, fontsize=14)
-        ax.set_ylabel("Density", fontsize=14)
-        ax.set_xlim(df[col].min(), df[col].max())
-
-        # ---------- 关键：设置 y 轴刻度 ----------
-        ax.yaxis.set_major_locator(ticker.MaxNLocator(5))  # 最多 5 个主刻度
-        my_formatter = MyScalarFormatter(useMathText=True)  # 之前已定义好的自定义 Formatter
-        my_formatter.set_powerlimits((0, 0))  # 强制使用科学计数法
-        ax.yaxis.set_major_formatter(my_formatter)
-        ax.yaxis.get_offset_text().set_fontsize(9)
-        # --------------------------------------
-
-        sm = cm.ScalarMappable(norm=norm, cmap=cmap)
-        sm.set_array([])
-        cb = plt.colorbar(sm, ax=ax)
-        cb.set_label("Value Range", fontweight='bold', fontsize=14)
-        cb.ax.tick_params(labelsize=12)
-=======
         # 使用格式化后的列名称
         ax.set_title(f"KDE of {col_label}", fontsize=16, fontweight='bold')
         ax.set_xlabel(col_label, fontsize=16, fontweight='bold')
@@ -975,16 +885,11 @@ def plot_kde_distribution(df, columns, filename):
         for tick in cb.ax.get_yticklabels():
             tick.set_fontsize(16)
             tick.set_fontweight('bold')
->>>>>>> 0c15363 (ai_4_catalyst-250425)
 
     plt.tight_layout()
     plt.savefig(filename, dpi=700)
     plt.close()
-<<<<<<< HEAD
-    print(f"[plot_residual_histogram] => {filename}")
-=======
     print(f"[plot_kde_distribution] => {filename}")
->>>>>>> 0c15363 (ai_4_catalyst-250425)
 
 
 def plot_catalyst_size_vs_product(df, filename):
@@ -1281,21 +1186,6 @@ def plot_3d_surface_from_heatmap(grid_x, grid_y, heatmap_pred,
         if (y_col_names is not None) and (odx < len(y_col_names)):
             cb.set_label(short_label_bold(y_col_names[odx]), fontsize=16, fontweight='bold')
         else:
-<<<<<<< HEAD
-            cb.set_label(f"Output_{odx}", fontsize=12)
-            ax.set_title(f"3D Surface - out {odx}", fontsize=14)
-
-        ax.set_xlabel(x_label, fontsize=12)
-        ax.set_ylabel(y_label, fontsize=12)
-        ax.set_zlabel("Value", fontsize=12)
-        ax.xaxis.set_major_locator(MaxNLocator(5))
-        ax.xaxis.set_major_formatter(FormatStrFormatter('%.1f'))
-        # =========== 仅修改 z轴部分，使用自定义 Formatter ===========
-        ax.zaxis.set_major_locator(LinearLocator(5))
-        ax.zaxis.set_major_formatter(FormatStrFormatter('%.d'))
-        # ========================================================
-        # ======== colorbar 与 z 轴保持一致 ========
-=======
             cb.set_label(f"Output_{odx}", fontsize=16, fontweight='bold')
         for tick in cb.ax.get_yticklabels():
             tick.set_fontsize(15)
@@ -1316,7 +1206,6 @@ def plot_3d_surface_from_heatmap(grid_x, grid_y, heatmap_pred,
         ax.xaxis.set_major_formatter(FormatStrFormatter('%.1f'))
         ax.zaxis.set_major_locator(LinearLocator(5))
         ax.zaxis.set_major_formatter(FormatStrFormatter('%.d'))
->>>>>>> 0c15363 (ai_4_catalyst-250425)
         ax.grid(False)
         out_jpg = os.path.join(out_dir, f"heatmap_3d_surface_output_{odx+1}.jpg")
         plt.savefig(out_jpg, dpi=700, bbox_inches='tight', pad_inches=0.2)
@@ -1347,11 +1236,6 @@ def plot_confusion_from_npy(confusion_pred,
     if y_col_names:
         y_col_names = [short_label_bold(name) for name in y_col_names]
     dim_used = min(4, out_dim)
-<<<<<<< HEAD
-
-    # 为每个维度计算归一化 (0..1)
-=======
->>>>>>> 0c15363 (ai_4_catalyst-250425)
     cmaps = [plt.get_cmap("Purples"), plt.get_cmap("Blues"),
              plt.get_cmap("Greens"), plt.get_cmap("Oranges")]
     norms = []
@@ -1403,20 +1287,10 @@ def plot_confusion_from_npy(confusion_pred,
     ax.invert_yaxis()
     ax.set_xticks([(j + 0.5) * cell_scale for j in range(n_cols)])
     ax.set_yticks([(i + 0.5) * cell_scale for i in range(n_rows)])
-<<<<<<< HEAD
-    ax.set_xticklabels(col_labels, rotation=45, ha='right', fontsize=12)
-    ax.set_yticklabels(row_labels, fontsize=9)
-
-    ax.set_ylabel(row_axis_name, fontsize=14)
-    ax.set_xlabel(col_axis_name, fontsize=14)
-
-    # 画 ColorBar（顶端）
-=======
     ax.set_xticklabels(col_labels, rotation=45, ha='right', fontsize=16, fontweight='bold')
     ax.set_yticklabels(row_labels, fontsize=16, fontweight='bold')
     ax.set_ylabel(row_axis_name, fontsize=16, fontweight='bold')
     ax.set_xlabel(col_axis_name, fontsize=16, fontweight='bold')
->>>>>>> 0c15363 (ai_4_catalyst-250425)
     cbar_width = 0.21
     cbar_height = 0.02
     cbar_bottom = 0.93
@@ -1431,14 +1305,7 @@ def plot_confusion_from_npy(confusion_pred,
             short_lbl = y_col_names[odx]
         else:
             short_lbl = f"Out {odx}"
-<<<<<<< HEAD
-
-        cb_.set_label(short_lbl, fontsize=12, labelpad=2)
-        # cb_.ax.tick_params(labelsize=8)
-        # 移除 colorbar 的刻度标签
-=======
         cb_.set_label(short_lbl, fontsize=16, fontweight='bold', labelpad=4)
->>>>>>> 0c15363 (ai_4_catalyst-250425)
         cb_.set_ticks([])
         cb_.ax.xaxis.set_label_position('bottom')
         cb_.ax.xaxis.set_ticks_position('top')
