@@ -81,7 +81,6 @@ evaluation:
   save_heatmap: true
 #  save_partial_dependence: false
   save_correlation: true
-  save_feature_importance_bar: true
   save_models_evaluation_bar: true
   # ★ 新增: 是否画数据分析可视化(比如KDE,散点,盒须图等)
   save_data_analysis_plots: true

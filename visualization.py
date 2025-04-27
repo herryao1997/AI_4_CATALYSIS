@@ -23,8 +23,6 @@ import joblib
 
 from utils import (
     ensure_dir,
-    # phik correlation
-    plot_mixed_correlation_heatmap,
     # nonlinear correlation
     plot_nonlinear_correlation_heatmap,
     # data analysis
@@ -44,7 +42,6 @@ from utils import (
     plot_scatter_3d_outputs_mae,
     plot_residual_histogram,
     plot_residual_kde,
-    plot_rf_feature_importance_bar,
     # shap analysis
     plot_shap_beeswarm,
     merge_onehot_shap,
@@ -127,7 +124,7 @@ def visualize_main():
         if config["evaluation"].get("save_correlation", False):
             fn1 = os.path.join(data_corr_dir, "correlation_heatmap.jpg")
             numeric_cols_14 = df_raw_14.select_dtypes(include=[np.number]).columns.tolist()
-            # plot_mixed_correlation_heatmap(
+
             plot_nonlinear_correlation_heatmap(
                 df_raw_14,
                 filename=fn1,
@@ -167,22 +164,6 @@ def visualize_main():
     else:
         print(f"[WARN] df_raw_14.csv not found => {raw_csv_path}")
 
-    # ========== 1.2) OneHot => 用 Phik ==========
-    x_onehot_path = os.path.join(base_train, "X_onehot.npy")
-    x_onehot_colnames_path = os.path.join(base_train, "x_onehot_colnames.npy")
-    if os.path.exists(x_onehot_path) and os.path.exists(x_onehot_colnames_path):
-        X_onehot = np.load(x_onehot_path)
-        onehot_colnames = np.load(x_onehot_colnames_path, allow_pickle=True).tolist()
-
-        df_onehot = pd.DataFrame(X_onehot, columns=onehot_colnames)
-
-        fn2 = os.path.join(data_corr_dir, "correlation_heatmap_one_hot.jpg")
-        plot_mixed_correlation_heatmap(
-            df_onehot,
-            filename=fn2,
-            cmap="ocean",
-            vmin=-1, vmax=1
-        )
 
     # ========== 1.3) Y_train.npy, Y_val.npy ==========
     y_train_path = os.path.join(base_train, "Y_train.npy")
@@ -270,23 +251,6 @@ def visualize_main():
                 out_kde_val = os.path.join(model_comp_dir, "full", "valid", f"{mtype}_residual_kde.jpg")
                 ensure_dir(os.path.dirname(out_kde_val))
                 plot_residual_kde(Y_val, val_pred, y_labels=y_cols, filename=out_kde_val)
-
-        # (c) 特征重要度
-        if config["evaluation"].get("save_feature_importance_bar", False):
-            fi_path = os.path.join(model_subdir, "feature_importance.npy")
-            xcol_path = os.path.join(model_subdir, "x_col_names.npy")
-
-            if os.path.exists(fi_path) and os.path.exists(xcol_path):
-                feature_importances = np.load(fi_path)
-                x_col_names = list(np.load(xcol_path, allow_pickle=True))
-
-                out_fi = os.path.join(model_comp_dir, f"{mtype}_feature_importance.jpg")
-                plot_rf_feature_importance_bar(feature_importances=feature_importances,
-                                               feature_names=x_col_names,
-                                               filename=out_fi)
-                print(f"[INFO] Feature importance plotted => {out_fi}")
-            else:
-                print(f"[WARN] Feature importance file missing: {fi_path} or {xcol_path}")
 
     # ========== 2) 汇总多个模型的 metrics ==========
     train_metrics_dict = {}
