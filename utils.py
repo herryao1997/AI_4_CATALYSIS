@@ -1238,7 +1238,13 @@ def plot_3d_bars_from_confusion(confusion_pred,
         # 设置z轴刻度：遍历所有z轴主刻度，设置 fontsize=16、加粗
         for tick in ax.zaxis.get_major_ticks():
             tick.label.set_fontsize(15)
-            # tick.label.set_fontweight('bold')
+            tick.label.set_fontweight('bold')
+        for label in ax.get_xticklabels():
+            label.set_fontweight('bold')
+
+        for label in ax.get_yticklabels():
+            label.set_fontweight('bold')
+
         # 坐标轴标签（x、y、z）
         ax.set_xlabel("", fontsize=16, fontweight='bold')
         ax.set_ylabel("", fontsize=16, fontweight='bold')

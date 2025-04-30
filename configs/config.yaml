@@ -73,18 +73,18 @@ training:
   log_interval: 5
 
 evaluation:
-  save_loss_curve: true
-  save_scatter_mse_plot: true
-  save_scatter_mae_plot: true
-  save_residual_hist: true
-  save_residual_kde: true
-  save_heatmap: true
+  save_loss_curve: false
+  save_scatter_mse_plot: false
+  save_scatter_mae_plot: false
+  save_residual_hist: false
+  save_residual_kde: false
+  save_heatmap: false
 #  save_partial_dependence: false
-  save_correlation: true
-  save_models_evaluation_bar: true
+  save_correlation: false
+  save_models_evaluation_bar: false
   # ★ 新增: 是否画数据分析可视化(比如KDE,散点,盒须图等)
-  save_data_analysis_plots: true
-  save_shap: true
+  save_data_analysis_plots: false
+  save_shap: false
 
 # ★ 新增: inference 配置
 inference:

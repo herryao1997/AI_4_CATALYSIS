@@ -135,7 +135,7 @@ def visualize_main():
 
         # 数据分析图
         if config["evaluation"].get("save_data_analysis_plots", False):
-            possible_cols = ["Potential (V vs. RHE)", "H2", "CO", "C1", "C2+", "Particle size (log scale)"]
+            possible_cols = ["Potential (V vs. RHE)", "H2", "CO", "C1", "C2+", "Particle size (log scale)", "Particle size (nm)"]
             existing_cols = [c for c in possible_cols if c in df_raw_14.columns]
             if existing_cols:
                 out_kde = os.path.join(data_corr_dir, "kde_distribution.jpg")
